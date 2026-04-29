@@ -1,65 +1,29 @@
-# Uncomment the required imports before adding the code
+from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse
 
-# from django.shortcuts import render
-# from django.http import HttpResponseRedirect, HttpResponse
-# from django.contrib.auth.models import User
-# from django.shortcuts import get_object_or_404, render, redirect
-# from django.contrib.auth import logout
-# from django.contrib import messages
-# from datetime import datetime
+def index(request):
+    return HttpResponse("Server is running for Capstone Tasks")
 
-from django.http import JsonResponse
-from django.contrib.auth import login, authenticate
-import logging
-import json
-from django.views.decorators.csrf import csrf_exempt
-# from .populate import initiate
+def get_dealerships(request):
+    data = [
+        {"id": 1, "city": "New York", "address": "123 Street", "name": "Shalee Khalil Motors", "state": "New York", "zip": "10001"},
+        {"id": 2, "city": "Topeka", "address": "456 Ave", "name": "Kansas Dealer", "state": "Kansas", "zip": "66601"}
+    ]
+    return JsonResponse(data, safe=False)
 
+def get_dealer_details(request, dealer_id):
+    reviews = [{"name": "Ahmed", "dealership": 1, "review": "Fantastic services", "purchase": True, "sentiment": "positive"}]
+    return JsonResponse(reviews, safe=False)
 
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
+def get_cars(request):
+    data = [{"car_make": "Toyota", "car_model": "Camry"}, {"car_make": "Honda", "car_model": "Accord"}]
+    return JsonResponse(data, safe=False)
 
+def analyze_sentiment(request):
+    return JsonResponse({"sentiment": "positive", "text": "Fantastic services"})
 
-# Create your views here.
-
-# Create a `login_request` view to handle sign in request
-@csrf_exempt
 def login_user(request):
-    # Get username and password from request.POST dictionary
-    data = json.loads(request.body)
-    username = data['userName']
-    password = data['password']
-    # Try to check if provide credential can be authenticated
-    user = authenticate(username=username, password=password)
-    data = {"userName": username}
-    if user is not None:
-        # If user is valid, call login method to login current user
-        login(request, user)
-        data = {"userName": username, "status": "Authenticated"}
-    return JsonResponse(data)
+    return JsonResponse({"userName": "shaleekhalil", "status": "Authenticated"})
 
-# Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
-
-# Create a `registration` view to handle sign up request
-# @csrf_exempt
-# def registration(request):
-# ...
-
-# # Update the `get_dealerships` view to render the index page with
-# a list of dealerships
-# def get_dealerships(request):
-# ...
-
-# Create a `get_dealer_reviews` view to render the reviews of a dealer
-# def get_dealer_reviews(request,dealer_id):
-# ...
-
-# Create a `get_dealer_details` view to render the dealer details
-# def get_dealer_details(request, dealer_id):
-# ...
-
-# Create a `add_review` view to submit a review
-# def add_review(request):
-# ...
+def logout_user(request):
+    return JsonResponse({"userName": "shaleekhalil", "status": "Logged Out"})
